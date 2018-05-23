@@ -1,0 +1,12 @@
+{
+    "version": 0.1,
+    "dispatch_name": "FISHTANKMONITOR",
+    "ports": {
+        "server_port": 5000,
+        "socket_port": 5001
+    },
+    "master": "localhost:5002",
+    "controllers": {
+        "nursery_tank_plug": "10.0.0.57"
+    }
+}
