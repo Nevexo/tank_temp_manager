@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/nevexo/tank_temp_manager#readme",
   "dependencies": {
-    "chalk": "^2.4.1"
+    "chalk": "^2.4.1",
+    "randomstring": "^1.1.5",
+    "request": "^2.87.0"
   }
 }

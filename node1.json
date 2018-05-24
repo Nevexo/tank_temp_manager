@@ -1,0 +1,16 @@
+{
+    "version": 0.2,
+    "dispatch_name": "FISH_TANK_MASTER",
+    "ports": {
+        "server_port": 5000
+    },
+    "next_of_kin": {
+        "address": "127.0.0.1",
+        "port": 5001
+    },
+    "master": "SELF",
+    "controllers": {
+        "nursery_tank_plug": "10.0.0.57"
+    },
+    "peers": ["127.0.0.1"]
+}
