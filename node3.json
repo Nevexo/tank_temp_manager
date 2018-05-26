@@ -1,13 +1,13 @@
 {
     "version": 0.1,
-    "dispatch_name": "FISH_TANK_CLIENT",
+    "dispatch_name": "FISH_TANK_CLIENT_2",
     "ports": {
         "server_port": 5001
     },
     "next_of_kin": {
         "address": "127.0.0.1",
         "port": 5001,
-        "self": true
+        "self": false
     },
     "master": "127.0.0.1:5000",
     "controllers": {
@@ -22,6 +22,6 @@
         "array_location": 1,
         "socket_ip": "10.0.0.14"
     },
-    "refresh_time": 10000,
+    "refresh_time": 5000,
     "peers": ["127.0.0.1"]
 }

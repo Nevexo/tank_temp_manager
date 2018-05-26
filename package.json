@@ -24,6 +24,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "randomstring": "^1.1.5",
-    "request": "^2.87.0"
+    "request": "^2.87.0",
+    "tplink-lightbulb": "^1.4.2"
   }
 }
