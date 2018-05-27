@@ -35,7 +35,7 @@ exports.module = function(helpers, mode, callback, extra) {
         })
         exports.client.on("error", () => {}) //Handle an error state.
         exports.client.on("close", () => {
-            helpers.log("state", "[NOK] NOK has gone offline, continue master start...")
+            if(!helpers.config.quiet) {helpers.log("state", "[NOK] NOK has gone offline, continue master start...")}
             callback("NO_NOK")})
     }else if (mode == "START_NOK") {
         helpers.log("state", "[CLIENT] Starting in NOK mode.")
