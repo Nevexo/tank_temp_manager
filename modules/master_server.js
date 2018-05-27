@@ -1,4 +1,5 @@
 var net = require("net")
+var keepalives = require("./keepalive.js")
 var randomstring = require("randomstring")
 var activeClients = {}
 exports.activeClients = activeClients
@@ -12,8 +13,9 @@ function handleSocket(helpers, socket, nok, server) {
     socket.on("close", () => {
         delete activeClients[socket.remoteAddress + ":" + socket.remotePort];
         helpers.log("state", "[MASTER] [ABORT] Client " + socket.remoteAddress + " has closed the connection.")
-        if (helpers.config.next_of_kin.address == socket.remoteAddress) {
-            helpers.log("warning", "[MASTER] NO NEXT OF KIN SERVER AVAILABLE, SYSTEM AT RISK.")
+        if (helpers.config.next_of_kin.address == socket.remoteAddress && helpers.config.ip_addr != "127.0.0.1") {
+            //This message only displays if the server that left is the registered next of kin & the system isn't running under test on one computer.
+            helpers.log("warning", "[MASTER] Next of kin server disconnected -- SYSTEM AT RISK")
         }
     })
     socket.on("error", (error) => {
@@ -21,7 +23,7 @@ function handleSocket(helpers, socket, nok, server) {
     })
     socket.on("data", (data) => {
         data = JSON.parse(data)
-        helpers.log("state", "[SERVER_CMD_DATA] " + data.cmd + " IS NOK SERVER: " + nok)
+        if (!helpers.config.quiet) {helpers.log("state", "[SERVER_CMD_DATA] " + data.cmd + " IS NOK SERVER: " + nok)}
         if (data.cmd == "NOK_SHUTDOWN" && nok) {
             helpers.log("warning", "[SERVER] Shutting down by request of MASTER")
             exports.state = "NOK_QUIT"
@@ -43,8 +45,12 @@ function handleSocket(helpers, socket, nok, server) {
             }else {
                 if (data.cmd == "APPROVE") {
                     helpers.controller.state("APPROVE", socket.remoteAddress + ":" + socket.remotePort)
-                }else {
+                }
+                if (data.cmd == "DISAPPROVE") {
                     helpers.controller.state("DISAPPROVE", socket.remoteAddress + ":" + socket.remotePort)
+                }
+                if (data.cmd == "KEEP_ALIVE_ACK") {
+                    keepalives.ack_keep_alive({"log": helpers.log, "active_clients": exports.activeClients}, socket.remoteAddress + ":" + socket.remotePort)
                 }
             }
             //helpers.log("state", "[DATA] " + data + " SOCKET TOKEN: " + activeClients[socket.remoteAddress + ":" + socket.remotePort].token)
@@ -55,7 +61,12 @@ function handleSocket(helpers, socket, nok, server) {
 
 exports.module = function(helpers, next_of_kin) {
     exports.state = "NOK_RUNNING"
-    helpers.log("state", "Master Server manager is starting...")
+    if (next_of_kin) {
+        helpers.log("state", "[MASTER] [NOK] Server manager is starting (NOK Conditions)")
+    }else {
+        helpers.log("state", "[MASTER] Server manager is starting...")
+    }
+    
     helpers.server = net.createServer(function(socket) {
         helpers.log("state", "[SOCKET] Connection established: " + socket.remoteAddress)
         if (helpers.config.peers.indexOf(socket.remoteAddress) > -1) {
@@ -69,13 +80,15 @@ exports.module = function(helpers, next_of_kin) {
     })
     var port;
     if (next_of_kin) {port = helpers.config.next_of_kin.port} else {port = helpers.config.ports.server_port}
-    helpers.server.listen(port, "127.0.0.1", (error) => {
+    helpers.server.listen(port, helpers.config.ip_addr, (error) => {
         if (error) {throw error;}
         helpers.log("state", "[MASTER] Server start on " + port)
     })
+    var keep_alive_monitor = new keepalives.master_montior({"log": helpers.log, "active_clients": exports.activeClients});
 
 }
 exports.shutdown = function(helpers) {
     helpers.log("warning", "[SERVER] Server is shutting down.")
+    keepalives.stop_all()
     helpers.server.destroy()
 }

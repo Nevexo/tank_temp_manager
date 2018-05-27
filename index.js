@@ -114,13 +114,19 @@ function start() {
                     var tempmon = new tempmon_module.module({"log": log, "config": config, "controller": controller, "active_clients": master_module.activeClients})
                 }
             }
-        })
+        }, "SILENT") //Run this verify in silent
+        var check_NOK_off = setInterval(() => {
+            var client = new client_module.module({"log": log, "config": config}, "VERIFY_NOK", (NOK_STATE) => {
+                //
+            })
+        }, 30000)
         
     }else {
         var client = new client_module.module({"log": log, "config": config}, "START_NORMAL")
         previous_state = 0;
         var check_client_state = setInterval(() => {
             if (client_module.state == "DANGER") {
+                log("error", "[CLIENT] Client has gone into danger state.")
                 if (config.next_of_kin.self) {
                     previous_state++;
                     if (previous_state > 5) {

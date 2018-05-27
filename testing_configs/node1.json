@@ -9,7 +9,7 @@
         "port": 5001,
         "self": false
     },
-    "ip_addr": "10.0.0.5",
+    "ip_addr": "127.0.0.1",
     "master": "SELF",
     "controllers": {
         "nursery_tank_plug": "10.0.0.57"

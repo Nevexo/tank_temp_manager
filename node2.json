@@ -9,7 +9,8 @@
         "port": 5001,
         "self": true
     },
-    "master": "127.0.0.1:5000",
+    "ip_addr": "10.0.0.5",
+    "master": "10.0.0.55:5000",
     "controllers": {
         "nursery_tank_plug": "10.0.0.57"
     },
@@ -23,5 +24,6 @@
         "socket_ip": "10.0.0.14"
     },
     "refresh_time": 10000,
-    "peers": ["127.0.0.1"]
+    "peers": ["127.0.0.1", "10.0.0.55", "10.0.0.160"],
+    "quiet": true
 }

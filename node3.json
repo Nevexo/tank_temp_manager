@@ -5,11 +5,12 @@
         "server_port": 5001
     },
     "next_of_kin": {
-        "address": "127.0.0.1",
-        "port": 5001,
+        "address": "10.0.0.160",
+        "port": 3224,
         "self": false
     },
-    "master": "127.0.0.1:5000",
+    "master": "10.0.0.55:5000",
+    "ip_addr": "10.0.0.5",
     "controllers": {
         "nursery_tank_plug": "10.0.0.57"
     },
@@ -23,5 +24,6 @@
         "socket_ip": "10.0.0.14"
     },
     "refresh_time": 5000,
-    "peers": ["127.0.0.1"]
+    "peers": ["127.0.0.1", "10.0.0.160", "10.0.0.5", "10.0.0.55"],
+    "quiet": false
 }

@@ -1,16 +1,16 @@
 {
-    "version": 0.2,
-    "dispatch_name": "FISH_TANK_MASTER",
+    "version": 0.1,
+    "dispatch_name": "FISH_TANK_CLIENT",
     "ports": {
-        "server_port": 5000
+        "server_port": 5001
     },
     "next_of_kin": {
         "address": "127.0.0.1",
         "port": 5001,
-        "self": false
+        "self": true
     },
-    "ip_addr": "10.0.0.5",
-    "master": "SELF",
+    "ip_addr": "127.0.0.1",
+    "master": "10.0.0.160:3224",
     "controllers": {
         "nursery_tank_plug": "10.0.0.57"
     },
@@ -21,9 +21,8 @@
         },
         "server": "http://10.0.0.23",
         "array_location": 1,
-        "socket_ip": "10.0.0.14",
-        "modes": ["OVERHEAT"]
+        "socket_ip": "10.0.0.14"
     },
-    "refresh_time": 60000,
+    "refresh_time": 10000,
     "peers": ["127.0.0.1"]
 }
