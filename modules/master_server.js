@@ -90,5 +90,4 @@ exports.module = function(helpers, next_of_kin) {
 exports.shutdown = function(helpers) {
     helpers.log("warning", "[SERVER] Server is shutting down.")
     keepalives.stop_all()
-    helpers.server.destroy()
 }

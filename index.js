@@ -54,22 +54,25 @@ function NOK() {
         if (tempmon_module.state == "OFF") {
             log("highlight", "[TMPMON] Staring tempMon in remote.")
             var tempmon = new tempmon_module.module({"log": log, "config": config, "controller": controller, "active_clients": master_module.activeClients})
+        }else {
+            log("error", "[NOK] [TMPMON] Not enabling, current state: " + tempmon_module.state)
         }
         var monitor_nok = setInterval(() => {
             //log("highlight", master_module.state)
             if (master_module.state == "NOK_QUIT") {
+                stopMaster()
                 log("state", "[NOK] NOK stopped, restarting.")
                 clearInterval(monitor_nok)
                 if (tempmon_module.state == "RUNNING") {tempmon_module.shutdown()}
                 start()
             }
         }, 500)
-        //  stopMaster()
     }
 }
 
 function stopMaster() {
-    master_module.shutdown({"log": log, "server": master})
+    tempmon_module.shutdown()
+    master_module.shutdown({"log": log})
 }
 
 log("provided_args", args)

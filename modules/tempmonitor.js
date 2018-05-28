@@ -55,6 +55,6 @@ exports.verify = function(verify_state, helpers, callback) {
     })
 }
 exports.shutdown = function() {
-    exports.state == "OFF"
+    exports.state = "OFF"
     clearInterval(exports.monitor_temp)
 }
